@@ -1,6 +1,6 @@
-# Custom Skills Marketplace
+# Skills Marketplace
 
-A Claude Code plugin marketplace providing skills for AI-assisted security analysis workflows. Inspired by [Trail of Bits Skills](https://github.com/trailofbits/skills).
+A Claude Code plugin marketplace providing skills for AI-assisted security analysis workflows.
 
 ## Installation
 
