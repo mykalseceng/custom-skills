@@ -88,9 +88,3 @@ skills/codebase-security-review/
 Reports are written as markdown files:
 - Repo mode: `<PROJECT>_SECURITY_REVIEW_<DATE>.md`
 - Diff mode: `<PROJECT>_DIFF_REVIEW_<DATE>.md`
-
-## Related Skills
-
-This skill was built on top of:
-- [Trail of Bits audit-context-building](https://github.com/trailofbits/skills/tree/main/plugins/audit-context-building) — Deep code comprehension for audits
-- [Trail of Bits differential-review](https://github.com/trailofbits/skills/blob/main/plugins/differential-review) — Security-focused diff review
