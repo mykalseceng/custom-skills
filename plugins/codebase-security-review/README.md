@@ -13,16 +13,17 @@ Deep code comprehension + security analysis for any codebase or code change. Lan
 
 ## Installation
 
-**Quick test (current session only):**
-```bash
-claude --plugin-dir /path/to/codebase-security-review
+### Add the Marketplace
+
+```
+/plugin marketplace add mykalseceng/custom-skills
 ```
 
-**Persistent install:**
+### Browse and Install
+
 ```
-/plugin marketplace add /path/to/codebase-security-review
+/plugin menu
 ```
-Then run `/plugin` → **Discover** tab → install at your preferred scope (user/project/local).
 
 ## Quick Start
 
