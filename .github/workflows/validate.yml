@@ -1,0 +1,106 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate plugins and skills
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate JSON files
+        run: |
+          echo "Validating marketplace.json..."
+          python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
+
+          echo "Validating plugin.json files..."
+          for f in plugins/*/.claude-plugin/plugin.json; do
+            echo "  Checking $f"
+            python3 -m json.tool "$f" > /dev/null
+          done
+
+      - name: Check marketplace consistency
+        run: |
+          python3 -c "
+          import json, os, sys
+
+          with open('.claude-plugin/marketplace.json') as f:
+              marketplace = json.load(f)
+
+          errors = []
+          for plugin in marketplace['plugins']:
+              name = plugin['name']
+              source = plugin['source']
+              path = source.lstrip('./')
+              if not os.path.isdir(path):
+                  errors.append(f'Plugin {name}: directory {path} not found')
+              plugin_json = os.path.join(path, '.claude-plugin', 'plugin.json')
+              if not os.path.isfile(plugin_json):
+                  errors.append(f'Plugin {name}: missing {plugin_json}')
+
+          if errors:
+              for e in errors:
+                  print(f'ERROR: {e}', file=sys.stderr)
+              sys.exit(1)
+
+          print(f'All {len(marketplace[\"plugins\"])} plugins validated')
+          "
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          python3 -c "
+          import os, re, sys
+
+          errors = []
+          skill_count = 0
+
+          for root, dirs, files in os.walk('plugins'):
+              for f in files:
+                  if f == 'SKILL.md':
+                      path = os.path.join(root, f)
+                      skill_count += 1
+                      with open(path) as fp:
+                          content = fp.read()
+                      if not content.startswith('---'):
+                          errors.append(f'{path}: missing YAML frontmatter')
+                          continue
+                      match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
+                      if not match:
+                          errors.append(f'{path}: malformed frontmatter')
+                          continue
+                      frontmatter = match.group(1)
+                      if 'name:' not in frontmatter:
+                          errors.append(f'{path}: missing \"name\" in frontmatter')
+                      if 'description:' not in frontmatter:
+                          errors.append(f'{path}: missing \"description\" in frontmatter')
+
+          if errors:
+              for e in errors:
+                  print(f'ERROR: {e}', file=sys.stderr)
+              sys.exit(1)
+
+          print(f'All {skill_count} SKILL.md files have valid frontmatter')
+          "
+
+      - name: Check for hardcoded paths
+        run: |
+          echo "Checking for hardcoded user paths..."
+          if grep -rE '/home/[a-z]|/Users/[A-Z]' plugins/ --include='*.md' --include='*.py' --include='*.json' | grep -v '/path/to'; then
+            echo "ERROR: Found hardcoded user paths (see above)"
+            exit 1
+          fi
+          echo "No hardcoded user paths found"

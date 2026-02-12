@@ -1,0 +1,5 @@
+# Default owner for everything
+* @dark_knight
+
+# Plugin-specific owners
+/plugins/codebase-security-review/ @dark_knight

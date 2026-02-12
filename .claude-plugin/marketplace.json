@@ -1,0 +1,21 @@
+{
+  "name": "custom-skills",
+  "owner": {
+    "name": "dark_knight"
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "description": "Claude Code plugins for AI-assisted security analysis. Inspired by Trail of Bits Skills."
+  },
+  "plugins": [
+    {
+      "name": "codebase-security-review",
+      "version": "1.0.0",
+      "description": "Full-codebase security review with deep code comprehension, threat modeling, OWASP vulnerability hunting, and exploit scenario building. Inspired by Trail of Bits audit-context-building and differential-review skills.",
+      "author": {
+        "name": "dark_knight"
+      },
+      "source": "./plugins/codebase-security-review"
+    }
+  ]
+}
