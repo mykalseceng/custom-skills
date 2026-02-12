@@ -1,6 +1,6 @@
 # Codebase Security Review
 
-Deep code comprehension + security analysis with exploit scenario building for any codebase or code change. Language-agnostic.
+Deep code comprehension + security analysis with exploit scenario building for any codebase or code change. Language-agnostic. Built on top of [Trail of Bits' Claude Code skills](https://github.com/trailofbits/skills) — specifically their [audit-context-building](https://github.com/trailofbits/skills/tree/main/plugins/audit-context-building) and [differential-review](https://github.com/trailofbits/skills/blob/main/plugins/differential-review) skills (see [Related Skills](#related-skills)).
 
 **Author**: dark_knight
 
@@ -91,6 +91,6 @@ Reports are written as markdown files:
 
 ## Related Skills
 
-For reference, this skill was inspired by:
-- [Trail of Bits differential-review](https://github.com/trailofbits/claude-code-plugins) — Security-focused diff review
-- [Trail of Bits audit-context-building](https://github.com/trailofbits/claude-code-plugins) — Deep code comprehension for audits
+This skill was built on top of:
+- [Trail of Bits audit-context-building](https://github.com/trailofbits/skills/tree/main/plugins/audit-context-building) — Deep code comprehension for audits
+- [Trail of Bits differential-review](https://github.com/trailofbits/skills/blob/main/plugins/differential-review) — Security-focused diff review
