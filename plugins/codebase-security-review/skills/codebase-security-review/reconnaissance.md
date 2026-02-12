@@ -41,6 +41,12 @@ grep -r "require 'sinatra'\|require 'rails'\|class.*< ApplicationController" --i
 
 # PHP
 grep -r "use Illuminate\|use Symfony\|use Laravel" --include="*.php"
+
+# Rust
+grep -r "use actix_web\|use axum\|use rocket\|use warp\|use hyper\|use tide" --include="*.rs"
+
+# C/C++
+grep -rn "include.*<microhttpd\|include.*<event2\|include.*<nghttp2\|include.*<pistache\|include.*<crow\|include.*<cpprest\|include.*<boost/beast\|include.*<boost/asio" --include="*.{c,cpp,cc,h,hpp}"
 ```
 
 ## 2. Directory Structure Mapping
@@ -117,6 +123,7 @@ Flag any secret-containing files NOT in `.gitignore`.
 | Java | `pom.xml` / `build.gradle` | — | Version ranges checked |
 | Ruby | `Gemfile` | `Gemfile.lock` | Lock committed |
 | PHP | `composer.json` | `composer.lock` | Lock committed |
+| C/C++ | `CMakeLists.txt` / `conanfile.txt` / `vcpkg.json` | `conan.lock` / `vcpkg-configuration.json` | Pinned versions checked |
 
 ### Dependency Red Flags
 
@@ -147,6 +154,12 @@ grep -rn "@RequestMapping\|@GetMapping\|@PostMapping\|@PutMapping\|@DeleteMappin
 
 # Ruby Rails
 grep -rn "get '\|post '\|put '\|patch '\|delete '\|resources \|resource " --include="*.rb" config/routes.rb
+
+# Rust Actix/Axum/Rocket
+grep -rn "\.route\|\.resource\|HttpServer\|#\[get\|#\[post\|#\[put\|#\[delete\|\.get(\|\.post(\|Router::new" --include="*.rs"
+
+# C/C++ HTTP/socket handlers
+grep -rn "MHD_create_response\|evhttp_set_cb\|listen(\|accept(\|recv(\|send(\|FCGX_Accept" --include="*.{c,cpp,cc,h,hpp}"
 ```
 
 ### CLI Entry Points
@@ -160,19 +173,25 @@ grep -rn "func main()" --include="*.go"
 
 # Node
 grep -rn "\"main\":\|\"bin\":" package.json
+
+# Rust
+grep -rn "fn main()\|#\[tokio::main\]\|#\[actix_web::main\]" --include="*.rs"
+
+# C/C++
+grep -rn "int main\|void main\|int wmain" --include="*.{c,cpp,cc}"
 ```
 
 ### Message Handlers / Background Jobs
 
 ```bash
 # Message queues
-grep -rn "consume\|subscribe\|on_message\|handle_message\|@celery\|@task\|Bull\|BullMQ\|SQS\|pubsub" -i --include="*.{py,js,ts,go,java,rb}"
+grep -rn "consume\|subscribe\|on_message\|handle_message\|@celery\|@task\|Bull\|BullMQ\|SQS\|pubsub" -i --include="*.{py,js,ts,go,java,rb,rs,c,cpp,cc}"
 
 # gRPC
-grep -rn "\.proto$\|grpc\.\|RegisterService\|add_.*Servicer" --include="*.{py,js,ts,go,java}"
+grep -rn "\.proto$\|grpc\.\|RegisterService\|add_.*Servicer\|tonic::" --include="*.{py,js,ts,go,java,rs,cpp,cc}"
 
 # WebSocket
-grep -rn "websocket\|ws\.\|socket\.on\|@OnMessage" -i --include="*.{py,js,ts,go,java,rb}"
+grep -rn "websocket\|ws\.\|socket\.on\|@OnMessage\|tungstenite" -i --include="*.{py,js,ts,go,java,rb,rs,c,cpp,cc}"
 ```
 
 ## 6. Auth/Authz Inventory
@@ -181,16 +200,16 @@ grep -rn "websocket\|ws\.\|socket\.on\|@OnMessage" -i --include="*.{py,js,ts,go,
 
 ```bash
 # Middleware patterns
-grep -rn "authenticate\|authorize\|isAuthenticated\|requireAuth\|protect\|guard\|@login_required\|@permission_required\|@requires_auth\|@jwt_required\|Authenticated\|AuthGuard" -i --include="*.{py,js,ts,go,java,rb,php}"
+grep -rn "authenticate\|authorize\|isAuthenticated\|requireAuth\|protect\|guard\|@login_required\|@permission_required\|@requires_auth\|@jwt_required\|Authenticated\|AuthGuard" -i --include="*.{py,js,ts,go,java,rb,php,rs,c,cpp,cc}"
 
 # JWT patterns
-grep -rn "jwt\.\|jsonwebtoken\|jose\.\|pyjwt\|golang-jwt\|auth0" -i --include="*.{py,js,ts,go,java,rb,php}"
+grep -rn "jwt\.\|jsonwebtoken\|jose\.\|pyjwt\|golang-jwt\|auth0" -i --include="*.{py,js,ts,go,java,rb,php,rs,c,cpp,cc}"
 
 # Session patterns
-grep -rn "session\.\(get\|set\|destroy\|regenerate\)\|express-session\|cookie-session\|flask\.session" --include="*.{py,js,ts,go,java,rb,php}"
+grep -rn "session\.\(get\|set\|destroy\|regenerate\)\|express-session\|cookie-session\|flask\.session" --include="*.{py,js,ts,go,java,rb,php,rs,c,cpp,cc}"
 
 # OAuth
-grep -rn "oauth\|passport\.\|grant_type\|authorization_code\|client_credentials" -i --include="*.{py,js,ts,go,java,rb,php}"
+grep -rn "oauth\|passport\.\|grant_type\|authorization_code\|client_credentials" -i --include="*.{py,js,ts,go,java,rb,php,rs,c,cpp,cc}"
 ```
 
 ### Auth Coverage Map
