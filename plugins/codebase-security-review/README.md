@@ -1,6 +1,6 @@
 # Codebase Security Review
 
-Deep code comprehension + security analysis with exploit scenario building for any codebase or code change. Language-agnostic. Built on top of [Trail of Bits' Claude Code skills](https://github.com/trailofbits/skills) — specifically their [audit-context-building](https://github.com/trailofbits/skills/tree/main/plugins/audit-context-building) and [differential-review](https://github.com/trailofbits/skills/blob/main/plugins/differential-review) skills (see [Related Skills](#related-skills)).
+Full-pipeline security review — deep code comprehension, reconnaissance, STRIDE threat modeling, OWASP Top 10 vulnerability hunting, and exploit scenario building — for entire codebases or code changes. Supports Python, JavaScript/TypeScript, Go, Java, Rust, Ruby, PHP, and C/C++. Built on top of [Trail of Bits' Claude Code skills](https://github.com/trailofbits/skills) — specifically their [audit-context-building](https://github.com/trailofbits/skills/tree/main/plugins/audit-context-building) and [differential-review](https://github.com/trailofbits/skills/blob/main/plugins/differential-review) skills.
 
 **Author**: dark_knight
 
