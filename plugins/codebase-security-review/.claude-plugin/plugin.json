@@ -1,7 +1,7 @@
 {
   "name": "codebase-security-review",
   "version": "1.0.0",
-  "description": "Full-codebase security review with deep code comprehension, threat modeling, and vulnerability hunting",
+  "description": "Full-codebase security review with deep code comprehension, threat modeling, OWASP vulnerability hunting, and exploit scenario building",
   "author": {
     "name": "dark_knight"
   }

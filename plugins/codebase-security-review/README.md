@@ -1,6 +1,6 @@
 # Codebase Security Review
 
-Deep code comprehension + security analysis for any codebase or code change. Language-agnostic.
+Deep code comprehension + security analysis with exploit scenario building for any codebase or code change. Language-agnostic.
 
 **Author**: dark_knight
 
