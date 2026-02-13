@@ -1,15 +1,17 @@
-# Phase 1: Deep Context Building
+# Phase 2: Deep Context Building
 
 Build line-by-line understanding of the code before making any security judgments. This phase is pure comprehension — no findings, no verdicts, no severity ratings yet.
+
+**Prerequisite**: Phase 1 (Reconnaissance) must be complete. This phase uses the recon output — entry points, auth map, dependency inventory, framework detection — to decide which functions to analyze and at what depth.
 
 The output of this phase feeds every subsequent phase. Cutting corners here guarantees hallucinated findings later.
 
 Three sub-phases, always in order:
 
 ```
-Sub-Phase 1A: Orientation    → Quick structural scan, establish anchors
-Sub-Phase 1B: Deep Analysis  → Line-by-line micro-analysis of selected functions
-Sub-Phase 1C: Synthesis      → Extract invariants, map state, identify risk clusters
+Sub-Phase 2A: Orientation    → Import recon output, supplement anchors
+Sub-Phase 2B: Deep Analysis  → Line-by-line micro-analysis of selected functions
+Sub-Phase 2C: Synthesis      → Extract invariants, map state, identify risk clusters
 ```
 
 ---
@@ -28,59 +30,50 @@ Sub-Phase 1C: Synthesis      → Extract invariants, map state, identify risk cl
 
 ---
 
-## Sub-Phase 1A: Orientation
+## Sub-Phase 2A: Orientation
 
-Before deep analysis, perform a quick structural scan to establish anchors. Do NOT attempt to understand behavior yet — just map what exists.
+Import the Phase 1 (Reconnaissance) output and supplement with anything recon missed. Do NOT re-discover what recon already found — build on it.
 
 ### Steps
 
-1. **Identify major modules/files/packages.** List them with one-line descriptions of their apparent purpose (from file names, directory structure, top-level comments).
+1. **Import recon output.** Copy the entry points, auth map, dependency inventory, language/framework detection, and secret findings from Phase 1. These are your starting anchors.
 
-2. **Identify public/external entry points.** Route handlers, CLI commands, message consumers, gRPC services, exported library functions. Just list them — don't analyze yet.
+2. **Supplement modules.** If recon didn't map all major modules/packages, fill gaps now. Add one-line descriptions of apparent purpose.
 
-3. **Identify actors.** Who interacts with this system? Users, admins, other services, cron jobs, external APIs, other contracts. List with their apparent privilege level.
+3. **Identify actors.** Who interacts with this system? Users, admins, other services, cron jobs, external APIs. List with their apparent privilege level. (Recon identified entry points; now identify who uses them.)
 
-4. **Identify important state.** Global variables, singletons, caches, database tables/collections, session stores, config objects. List with their location.
+4. **Identify important state.** Global variables, singletons, caches, database tables/collections, session stores, config objects. List with their location. (Not covered by recon.)
 
-5. **Identify obvious dependencies.** Frameworks, ORMs, auth libraries, crypto libraries, HTTP clients. Note versions if visible in manifests.
-
-6. **Note anything surprising.** Unusual file structure, unexpected binaries, vendored code, generated code, large data files in source. Flag but don't investigate yet.
+5. **Note anything surprising.** Unusual patterns, unexpected binaries, vendored code, generated code, discrepancies between recon findings and actual code. Flag but don't investigate yet.
 
 ### Orientation Output
 
 ```
-## 1A: Orientation Anchors
+## 2A: Orientation Anchors
 
-Modules: [count]
-  - [module] → [apparent purpose]
-  - ...
+[Imported from Phase 1 Recon]
+  Entry Points: [count] (from recon)
+  Auth Map: [summary] (from recon)
+  Dependencies: [count] (from recon)
+  Languages/Frameworks: [list] (from recon)
 
-Entry Points: [count]
-  - [entry point] → [type: HTTP/CLI/message/gRPC/export]
-  - ...
-
-Actors: [count]
-  - [actor] → [privilege level]
-  - ...
-
-State: [count]
-  - [variable/table] → [location]
-  - ...
-
-Key Dependencies:
-  - [dep] → [version] → [role: ORM/auth/crypto/HTTP/...]
-  - ...
-
-Surprises: [list anything unexpected]
+[Supplemented in this phase]
+  Modules: [count]
+    - [module] → [apparent purpose]
+  Actors: [count]
+    - [actor] → [privilege level]
+  State: [count]
+    - [variable/table] → [location]
+  Surprises: [list anything unexpected]
 ```
 
-This output establishes anchors for Sub-Phase 1B. Refer back to it constantly during deep analysis.
+This output establishes anchors for Sub-Phase 2B. Refer back to it constantly during deep analysis.
 
 ---
 
-## Sub-Phase 1B: Deep Analysis
+## Sub-Phase 2B: Deep Analysis
 
-Line-by-line micro-analysis of functions selected by the current depth level. This is the core of context building.
+Line-by-line micro-analysis of functions selected by the current depth level. This is the core of context building. Use Phase 1 recon output to prioritize: start with entry points that handle auth, user input, or sensitive data.
 
 ### Adaptive Depth — Which Functions to Analyze
 
@@ -200,7 +193,7 @@ Subagents **must** follow the same micro-analysis rules. Return structured summa
 
 ---
 
-## Sub-Phase 1C: Synthesis
+## Sub-Phase 2C: Synthesis
 
 After sufficient micro-analysis, step back and build the global picture. This is where individual function understanding becomes system understanding.
 
@@ -306,11 +299,11 @@ These are minimums, not targets. Exceeding them is expected for complex function
 
 ## Completeness Gate
 
-**Do NOT proceed to Phase 2 until every item below is satisfied.** If an item fails, go back and fix it. This gate exists because incomplete context guarantees hallucinated findings.
+**Do NOT proceed to Phase 3 until every item below is satisfied.** If an item fails, go back and fix it. This gate exists because incomplete context guarantees hallucinated findings.
 
 ### Structural Completeness
 
-- [ ] All required sub-phases completed (1A Orientation, 1B Deep Analysis, 1C Synthesis)
+- [ ] All required sub-phases completed (2A Orientation, 2B Deep Analysis, 2C Synthesis)
 - [ ] All functions selected by the current depth level have been analyzed
 - [ ] Every analyzed function has all 5 sections (Purpose, Inputs, Outputs, Block-by-Block, Summary)
 - [ ] Cross-function flow tracing done for every call from an analyzed function to another
@@ -320,19 +313,20 @@ These are minimums, not targets. Exceeding them is expected for complex function
 - [ ] Per-function quality thresholds met (invariants, assumptions, risk considerations, First Principles, 5 Whys/Hows)
 - [ ] Global quality thresholds met (system invariants, trust boundaries, state variables, risk clusters)
 - [ ] No function summary contains vague language ("probably", "likely", "should", "seems to") without an explicit "Unclear; need to inspect X" marker
+- [ ] Phase 1 recon output was imported and used to guide function selection
 
 ### Continuity & Integration
 
 - [ ] Cross-references exist between functions that share state or assumptions
-- [ ] Invariants from Sub-Phase 1B are reflected in Sub-Phase 1C extraction
-- [ ] Trust boundary map in 1C is consistent with per-function trust level assessments in 1B
+- [ ] Invariants from Sub-Phase 2B are reflected in Sub-Phase 2C extraction
+- [ ] Trust boundary map in 2C is consistent with per-function trust level assessments in 2B
 - [ ] No "island" functions — every analyzed function connects to at least one other through calls, shared state, or shared invariants
 
 ### Anti-Hallucination
 
 - [ ] Every claim cites a file:line reference or is explicitly marked as inferred
 - [ ] No invariant is stated without identifying which functions maintain it and which assume it
-- [ ] All "unclear" items from 1B are either resolved in 1C or listed in Unresolved Questions
+- [ ] All "unclear" items from 2B are either resolved in 2C or listed in Unresolved Questions
 - [ ] Mental model was updated at least once during analysis (if it wasn't, you weren't paying attention)
 
 **If any checkbox fails**: go back to the relevant sub-phase and fix it before proceeding.
@@ -353,7 +347,7 @@ These rules are mandatory throughout all sub-phases. Violating them invalidates 
 
 ---
 
-## Phase 1 Output Template
+## Phase 2 Output Template
 
 After completing all three sub-phases, produce:
 
@@ -364,9 +358,9 @@ After completing all three sub-phases, produce:
 ### Depth: [QUICK / STANDARD / DEEP]
 ### Completeness Gate: [PASSED / FAILED — if failed, list which items]
 
-### Orientation Anchors
-- Modules: [count] — [list key ones]
-- Entry points: [count]
+### Orientation Anchors (imported from Phase 1 + supplemented)
+- Entry points: [count] (from recon)
+- Modules: [count]
 - Actors: [list]
 - Key state: [list]
 
@@ -409,4 +403,4 @@ Areas where multiple risk signals converge:
 2. ...
 ```
 
-This output feeds directly into Phase 2 (Reconnaissance) and Phase 3 (Threat Model).
+This output feeds directly into Phase 3 (Threat Model).

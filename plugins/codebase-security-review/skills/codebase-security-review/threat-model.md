@@ -1,6 +1,6 @@
 # Phase 3: Threat Modeling
 
-Build an architecture-level understanding of what the system does, where the trust boundaries are, who the attackers are, and what can go wrong. This phase bridges reconnaissance (what exists) and vulnerability hunting (what's broken).
+Build an architecture-level understanding of what the system does, where the trust boundaries are, who the attackers are, and what can go wrong. This phase uses Phase 1 (Reconnaissance) data and Phase 2 (Deep Context) understanding to bridge enumeration and vulnerability hunting.
 
 ## 1. System Architecture Mapping
 

@@ -88,8 +88,8 @@ File name: `<PROJECT>_SECURITY_REVIEW_<YYYY-MM-DD>.md`
 - **Commit**: <SHA>
 
 ### Methodology
-1. Deep code comprehension (line-by-line analysis of key functions)
-2. Reconnaissance (language detection, entry points, dependencies, secrets)
+1. Reconnaissance (language detection, entry points, dependencies, secrets, auth mapping)
+2. Deep code comprehension (line-by-line analysis of key functions informed by recon)
 3. Threat modeling (architecture, trust boundaries, STRIDE analysis)
 4. OWASP Top 10 vulnerability hunting (systematic grep + manual review)
 5. Deep dive on HIGH/CRITICAL findings (exploit scenario development)

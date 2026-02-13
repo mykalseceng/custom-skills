@@ -1,6 +1,6 @@
-# Phase 2: Reconnaissance
+# Phase 1: Reconnaissance
 
-Discover what the codebase is, what it's built with, and where the interesting attack surface lives. This phase is systematic enumeration — not analysis.
+Discover what the codebase is, what it's built with, and where the interesting attack surface lives. This phase is systematic enumeration — not analysis. Its output feeds directly into Phase 2 (Deep Context Building), which uses the entry points, dependencies, and auth map discovered here to decide which functions to analyze line-by-line.
 
 ## 1. Language & Framework Detection
 
@@ -258,7 +258,11 @@ Flag endpoints that should be protected but aren't.
 - Middleware: [file:line]
 - Unprotected endpoints: [list of concerning ones]
 
-### Risk Signals for Phase 3
+### Risk Signals for Phase 2 (Deep Context)
+1. [signal] — [which functions to prioritize for micro-analysis]
+2. ...
+
+### Risk Signals for Phase 3 (Threat Model)
 1. [signal] — [why it matters]
 2. ...
 ```

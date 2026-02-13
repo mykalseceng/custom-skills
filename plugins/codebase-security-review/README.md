@@ -33,7 +33,7 @@ Full-pipeline security review — deep code comprehension, reconnaissance, STRID
 /security-review /path/to/repo --depth standard
 ```
 
-Runs all 6 phases: deep context → reconnaissance → threat model → vulnerability hunting → deep dive → report.
+Runs all 6 phases: reconnaissance → deep context → threat model → vulnerability hunting → deep dive → report.
 
 ### PR / Commit Review
 
@@ -56,8 +56,8 @@ Runs diff-specific phases: intake → context building → change analysis → b
 
 ### Repo Mode
 
-1. **Deep Context Building** — Line-by-line comprehension, invariant extraction, state mapping
-2. **Reconnaissance** — Languages, frameworks, entry points, dependencies, secrets, auth inventory
+1. **Reconnaissance** — Languages, frameworks, entry points, dependencies, secrets, auth inventory
+2. **Deep Context Building** — Line-by-line comprehension, invariant extraction, state mapping (guided by recon)
 3. **Threat Modeling** — Architecture diagram, trust boundaries, STRIDE analysis, attacker profiles
 4. **Vulnerability Hunting** — Systematic OWASP Top 10 check with detection patterns + manual review
 5. **Deep Dive** — Full exploit scenarios for HIGH/CRITICAL findings
@@ -75,8 +75,8 @@ Runs diff-specific phases: intake → context building → change analysis → b
 ```
 skills/codebase-security-review/
   SKILL.md                  # Main skill: modes, principles, decision tree, rationalizations
-  deep-context.md           # Phase 1: line-by-line code comprehension methodology
-  reconnaissance.md         # Phase 2: language/framework detection, entry points, secrets, deps
+  reconnaissance.md         # Phase 1: language/framework detection, entry points, secrets, deps
+  deep-context.md           # Phase 2: line-by-line code comprehension methodology
   threat-model.md           # Phase 3: architecture, trust boundaries, STRIDE, attacker profiles
   vulnerability-hunting.md  # Phase 4-5: OWASP vuln hunt + deep dive with exploit scenarios
   diff-review.md            # Diff mode: git-aware review of PRs/commits

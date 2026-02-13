@@ -1,11 +1,10 @@
 ---
 name: codebase-security-review
 description: >
-  Performs deep code comprehension followed by security review of entire codebases
-  or code changes. Combines line-by-line analysis with threat modeling, OWASP
-  vulnerability hunting, and exploit scenario building. Use for full repo security
-  audits, PR/commit security review, or threat modeling any codebase.
-  Language-agnostic (Python, Go, TypeScript, Rust, Java, C/C++, Ruby, PHP, etc.).
+  Full-pipeline security review — deep code comprehension, reconnaissance, STRIDE
+  threat modeling, OWASP Top 10 vulnerability hunting, and exploit scenario building
+  — for entire codebases or code changes. Supports Python, JavaScript/TypeScript,
+  Go, Java, Rust, Ruby, PHP, and C/C++.
 allowed-tools:
   - Read
   - Write
@@ -16,14 +15,14 @@ allowed-tools:
 
 # Codebase Security Review
 
-Deep code comprehension + security analysis. Two modes, one methodology.
+Full-pipeline security review — from deep code comprehension through exploit scenario building. Two modes, one methodology.
 
 ## Companion Files
 
 All methodology docs are **sibling files in the same directory as this SKILL.md** (not in a subdirectory):
 
-- **[deep-context.md](deep-context.md)** — Phase 1: Line-by-line micro-analysis methodology
-- **[reconnaissance.md](reconnaissance.md)** — Phase 2: Language, framework, entry point, dependency discovery
+- **[reconnaissance.md](reconnaissance.md)** — Phase 1: Language, framework, entry point, dependency discovery
+- **[deep-context.md](deep-context.md)** — Phase 2: Line-by-line micro-analysis methodology
 - **[threat-model.md](threat-model.md)** — Phase 3: Architecture, trust boundaries, STRIDE analysis
 - **[vulnerability-hunting.md](vulnerability-hunting.md)** — Phases 4-5: OWASP hunting + exploit deep dive
 - **[reporting.md](reporting.md)** — Phase 6: Report templates (repo + diff modes)
@@ -34,8 +33,8 @@ All methodology docs are **sibling files in the same directory as this SKILL.md*
 | Aspect | Repo Mode (Full Codebase) | Diff Mode (PR / Commit) |
 |--------|--------------------------|------------------------|
 | **Input** | Path to repository | PR URL, commit SHA, or .diff/.patch file |
-| **Phase 1** | Deep Context (all key functions) | Deep Context (changed functions + callers) |
-| **Phase 2** | Reconnaissance | Intake & Triage |
+| **Phase 1** | Reconnaissance | Intake & Triage |
+| **Phase 2** | Deep Context (key functions) | Deep Context (changed functions + callers) |
 | **Phase 3** | Threat Model | Changed Code Analysis |
 | **Phase 4** | OWASP Vulnerability Hunt | Git History + Blast Radius |
 | **Phase 5** | Deep Dive on HIGHs | Adversarial Analysis on HIGHs |
@@ -85,14 +84,14 @@ All methodology docs are **sibling files in the same directory as this SKILL.md*
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  Phase 1: DEEP CONTEXT BUILDING (deep-context.md)               │
-│  ┌─ 1A: Orientation → structural scan, establish anchors        │
-│  ├─ 1B: Deep Analysis → line-by-line micro-analysis             │
-│  └─ 1C: Synthesis → invariants, state map, risk clusters        │
-│  ⛔ COMPLETENESS GATE — must pass before proceeding             │
-├─────────────────────────────────────────────────────────────────┤
-│  Phase 2: RECONNAISSANCE (reconnaissance.md)                    │
+│  Phase 1: RECONNAISSANCE (reconnaissance.md)                    │
 │  → Languages, frameworks, entry points, deps, secrets, auth     │
+├─────────────────────────────────────────────────────────────────┤
+│  Phase 2: DEEP CONTEXT BUILDING (deep-context.md)               │
+│  ┌─ 2A: Orientation → import recon, supplement anchors          │
+│  ├─ 2B: Deep Analysis → line-by-line micro-analysis             │
+│  └─ 2C: Synthesis → invariants, state map, risk clusters        │
+│  ⛔ COMPLETENESS GATE — must pass before proceeding             │
 ├─────────────────────────────────────────────────────────────────┤
 │  Phase 3: THREAT MODEL (threat-model.md)                        │
 │  → Architecture, trust boundaries, STRIDE, attacker profiles    │
@@ -113,7 +112,7 @@ All methodology docs are **sibling files in the same directory as this SKILL.md*
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  Step 1: INTAKE & CONTEXT (diff-review.md + deep-context.md)    │
-│  → Extract diff, risk-score files, comprehend changed functions │
+│  → Extract diff, risk-score files, deep-context changed funcs   │
 ├─────────────────────────────────────────────────────────────────┤
 │  Step 2: CHANGED CODE ANALYSIS (diff-review.md)                 │
 │  → BEFORE/AFTER per hunk, git history, blast radius, tests      │
@@ -130,27 +129,27 @@ All methodology docs are **sibling files in the same directory as this SKILL.md*
 
 **Repo mode — follow in order:**
 
-1. Start with **reconnaissance** → read [reconnaissance.md](reconnaissance.md)
+1. **Reconnaissance** → read [reconnaissance.md](reconnaissance.md)
    - Detect languages, frameworks, entry points, dependencies, secrets, auth
-2. Build **deep context** for key functions → read [deep-context.md](deep-context.md)
-   - Depth determines which functions: QUICK (entry points), STANDARD (public), DEEP (all)
-3. Create **threat model** → read [threat-model.md](threat-model.md)
+2. **Deep context** for key functions → read [deep-context.md](deep-context.md)
+   - Recon output determines which functions to analyze: QUICK (entry points), STANDARD (public), DEEP (all)
+3. **Threat model** → read [threat-model.md](threat-model.md)
    - Architecture, trust boundaries, STRIDE, attacker profiles
-4. Hunt **vulnerabilities** → read [vulnerability-hunting.md](vulnerability-hunting.md) (Phase 4)
+4. **Vulnerability hunting** → read [vulnerability-hunting.md](vulnerability-hunting.md) (Phase 4)
    - Systematic OWASP check informed by threat model
 5. **Deep dive** on HIGH/CRITICAL → read [vulnerability-hunting.md](vulnerability-hunting.md) (Phase 5)
    - Full exploit scenarios, exploitability rating
-6. Write **report** → read [reporting.md](reporting.md)
+6. **Report** → read [reporting.md](reporting.md)
 
 **Diff mode — follow in order:**
 
-1. **Intake & triage** → read [diff-review.md](diff-review.md) (Section 1-2)
+1. **Intake & triage** → read [diff-review.md](diff-review.md) (Sections 1-2)
    - Extract changes, risk-score files, build context on changed functions using [deep-context.md](deep-context.md)
-2. **Analyze changes** → read [diff-review.md](diff-review.md) (Section 3-6)
+2. **Analyze changes** → read [diff-review.md](diff-review.md) (Sections 3-6)
    - BEFORE/AFTER, git history, test coverage, blast radius
-3. **Adversarial analysis** for HIGHs → read [diff-review.md](diff-review.md) (Section 7-8)
+3. **Adversarial analysis** for HIGHs → read [diff-review.md](diff-review.md) (Sections 7-8)
    - Exploit scenarios, cross-cutting pattern checks
-4. Write **report** → read [reporting.md](reporting.md) (Diff mode template)
+4. **Report** → read [reporting.md](reporting.md) (Diff mode template)
 
 ## Quality Checklist
 
@@ -177,10 +176,10 @@ Spawn subagents to parallelize work and protect context window. Rules:
 
 | Situation | Subagent Task | Why |
 |-----------|--------------|-----|
-| Phase 1B: Dense function (>50 LOC, multiple branches + external calls) | Full micro-analysis of that function | Prevents context blowup in main thread |
-| Phase 1B: Long call chain (>3 hops) | Trace the chain end-to-end, return summary | Call chain context is easy to lose |
-| Phase 1B: Crypto or math-heavy logic | Focused analysis of the algorithm | Requires undivided attention |
-| Phase 2: Large codebase (>200 files) | Parallel recon: one for deps, one for entry points, one for secrets | Speed up enumeration |
+| Phase 1: Large codebase (>200 files) | Parallel recon: one for deps, one for entry points, one for secrets | Speed up enumeration |
+| Phase 2B: Dense function (>50 LOC, multiple branches + external calls) | Full micro-analysis of that function | Prevents context blowup in main thread |
+| Phase 2B: Long call chain (>3 hops) | Trace the chain end-to-end, return summary | Call chain context is easy to lose |
+| Phase 2B: Crypto or math-heavy logic | Focused analysis of the algorithm | Requires undivided attention |
 | Phase 4: Multiple OWASP categories to check | One subagent per OWASP category (A01-A10) | Parallelizes the grep + review cycle |
 | Phase 5: Multiple HIGH/CRITICAL findings | One subagent per finding for exploit scenario development | Each exploit trace needs full attention |
 | Diff mode: Large PR (50+ files) | Parallel risk-scoring and context building by file group | Prevents bottleneck on sequential file review |
