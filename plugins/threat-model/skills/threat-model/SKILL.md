@@ -106,38 +106,38 @@ At the end of each phase, output a brief completion summary before proceeding.
    - Output: logic flaw inventory with file:line references
 4. **Phase 4: Threat Analysis & Ranking** → read [threat-analysis.md](threat-analysis.md)
    - Derive threats from broken assumptions + logic flaws; rank by likelihood
-   - Output: ranked threat list + attack paths + focus areas
+   - Output: ranked finding list + attack paths + focus areas
 5. **Phase 5: Report** → read [reporting.md](reporting.md)
    - Write the threat model document to a markdown file
    - Output: `<PROJECT>_THREAT_MODEL_<YYYY-MM-DD>.md` written to the project's root directory
-   - After writing, inform the user: file path, threat counts by risk level, top 3 threats, top recommendation
+   - After writing, inform the user: file path, finding counts by risk level, top 3 findings, top recommendation
 
 ## Review Depth
 
 | Depth | When | Functions Analyzed | Assumption Depth | Threat Scope |
 |-------|------|-------------------|-----------------|-------------|
-| **QUICK** | <20 files, time-constrained | Entry points + critical workflow functions | Top-level assumptions only | Workflow-level threats |
-| **STANDARD** | 20-200 files, typical review | All public/exported functions + key internal paths | Full assumption mapping per function | Function + workflow threats |
-| **DEEP** | >200 files, audit engagement | Every non-trivial function incl. helpers | Full mapping + cross-function assumption chains | Function + workflow + compound threats |
+| **QUICK** | <20 files, time-constrained | Entry points + critical workflow functions | Top-level assumptions only | Workflow-level findings |
+| **STANDARD** | 20-200 files, typical review | All public/exported functions + key internal paths | Full assumption mapping per function | Function + workflow findings |
+| **DEEP** | >200 files, audit engagement | Every non-trivial function incl. helpers | Full mapping + cross-function assumption chains | Function + workflow + compound findings |
 
 ## Quality Checklist
 
 Before finalizing any threat model, verify:
 
-- [ ] Every identified threat traces back to a specific broken assumption or logic flaw
+- [ ] Every finding (F-NNN) traces back to a specific broken assumption or logic flaw
 - [ ] Every assumption is classified as VALIDATED / UNVALIDATED / VIOLATED with evidence
 - [ ] Threats are ranked by likelihood, not just impact
 - [ ] Attack paths show concrete multi-step chains, not vague "could lead to" statements
-- [ ] No threat is based on a generic checklist item without codebase-specific evidence
+- [ ] No finding is based on a generic checklist item without codebase-specific evidence
 - [ ] Coverage stated: what workflows were analyzed, what was skipped, why
-- [ ] Confidence level stated for each threat (HIGH/MEDIUM/LOW confidence)
+- [ ] Confidence level stated for each finding (HIGH/MEDIUM/LOW confidence)
 - [ ] Report follows template in [reporting.md](reporting.md)
 
 ## Anti-Hallucination Rules
 
 These rules are mandatory throughout all phases:
 
-1. **Never claim a threat without tracing it to a specific assumption or logic flaw.** "This could be exploited" without evidence is hallucination.
+1. **Never claim a finding without tracing it to a specific assumption or logic flaw.** "This could be exploited" without evidence is hallucination.
 2. **Never state an assumption is VIOLATED without file:line evidence.** If you can't find evidence, classify as UNVALIDATED, not VIOLATED.
 3. **Update explicitly when contradicted.** Say: "Earlier I assumed X. File:line shows X is false. Updated model: ..."
 4. **"Unclear; need to inspect X" is always valid.** Never guess at intent or behavior.
@@ -155,7 +155,7 @@ Spawn subagents to parallelize work and protect context window:
 | Phase 2: Dense function (>50 LOC, complex branching) | Full intent + assumption analysis of that function | Prevents context blowup |
 | Phase 2: Long assumption chain (>3 functions) | Trace the chain end-to-end, return assumption map | Chain context is easy to lose |
 | Phase 3: Multiple workflows to walk adversarially | One subagent per workflow | Parallelizes adversarial analysis |
-| Phase 4: Multiple threat clusters to analyze | One subagent per cluster for derivation + ranking | Each cluster needs full attention |
+| Phase 4: Multiple finding clusters to analyze | One subagent per cluster for derivation + ranking | Each cluster needs full attention |
 
 ### Subagent Rules
 

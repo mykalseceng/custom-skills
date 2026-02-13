@@ -48,7 +48,7 @@ For each transition between trust levels identified in Phase 2 (TRUST assumption
 - [A-NNN]: [assumption] — [status]
 
 **Logic flaws at this boundary**:
-- [LF-NNN]: [flaw] — [category]
+- [LF-NNN]: [flaw] — [category] (maps to F-NNN in report)
 
 **Data crossing**: [what data moves across this boundary]
 **Validation present**: [what's checked]
@@ -76,10 +76,12 @@ For each source (unvalidated assumption, violated assumption, logic flaw, broken
 4. **Assess the impact**: what's the concrete consequence
 5. **Score the likelihood**: using the 5-factor model below
 
-### Threat Template
+### Finding Template
+
+Each finding consolidates the full chain: intent gap (G-NNN from Phase 2) + logic flaw (LF-NNN from Phase 3) + threat assessment into a single unit. Use F-NNN IDs — these carry directly into the report.
 
 ```markdown
-### T-NNN: [threat title]
+### F-NNN: [finding title]
 
 **Source**:
 - Assumption(s): [A-NNN — description]
@@ -142,17 +144,17 @@ LOW Likely    │ LOW         │ LOW         │ MEDIUM      │ HIGH        �
 
 ### Sorting Rule
 
-**Sort threats by likelihood FIRST, then by impact within the same likelihood tier.** This guides the analyst to focus on what's most likely to be exploited, not what's theoretically worst.
+**Sort findings by likelihood FIRST, then by impact within the same likelihood tier.** This guides the analyst to focus on what's most likely to be exploited, not what's theoretically worst.
 
 ---
 
 ## Attack Path Mapping
 
-Connect individual threats into multi-step attack chains. Attack paths show how an attacker progresses from initial access to final impact.
+Connect individual findings into multi-step attack chains. Attack paths show how an attacker progresses from initial access to final impact.
 
 ### Path Construction
 
-For each HIGH-likelihood threat, ask: "What can the attacker do AFTER exploiting this?" Chain threats together.
+For each HIGH-likelihood finding, ask: "What can the attacker do AFTER exploiting this?" Chain findings together.
 
 ```markdown
 ### Attack Path: [name]
@@ -161,11 +163,11 @@ For each HIGH-likelihood threat, ask: "What can the attacker do AFTER exploiting
 **Entry**: [starting point]
 
 **Steps**:
-1. **T-NNN** [threat title] → gains [access/data/capability]
+1. **F-NNN** [finding title] → gains [access/data/capability]
    - Likelihood: [score]
-2. **T-NNN** [threat title] → escalates to [next level]
+2. **F-NNN** [finding title] → escalates to [next level]
    - Likelihood: [score]
-3. **T-NNN** [threat title] → achieves [final impact]
+3. **F-NNN** [finding title] → achieves [final impact]
    - Likelihood: [score]
 
 **Cumulative likelihood**: [product of individual likelihoods — approximate]
@@ -185,10 +187,10 @@ Rank attack paths by:
 
 After scoring and ranking, identify the most important areas for remediation.
 
-### Top Threats
+### Top Findings
 
-List the top 10 threats by risk (likelihood × impact), with:
-- Threat ID and title
+List the top 10 findings by risk (likelihood × impact), with:
+- Finding ID and title
 - Source assumptions/flaws
 - Actor and scenario (1-sentence)
 - Likelihood and impact scores
@@ -202,7 +204,7 @@ List the top 5 attack paths, with:
 
 ### Unresolved Assumptions
 
-List all UNVALIDATED assumptions that haven't yet been connected to a specific threat. These are potential blind spots.
+List all UNVALIDATED assumptions that haven't yet been connected to a specific finding. These are potential blind spots.
 
 ---
 
@@ -211,17 +213,17 @@ List all UNVALIDATED assumptions that haven't yet been connected to a specific t
 ```markdown
 ## Threat Analysis Summary
 
-### Threat Inventory
-| # | Threat | Source | Actor | Likelihood | Impact | Risk |
-|---|--------|--------|-------|-----------|--------|------|
-| T-001 | [title] | A-001, LF-003 | Authenticated user | HIGH (4.2) | HIGH | CRITICAL |
-| T-002 | [title] | A-005 | Unauthenticated | MEDIUM (3.1) | CRITICAL | CRITICAL |
-| T-003 | [title] | LF-007, C-002 | Authenticated user | HIGH (3.8) | MEDIUM | HIGH |
+### Finding Inventory
+| # | Finding | Source | Actor | Likelihood | Impact | Risk |
+|---|---------|--------|-------|-----------|--------|------|
+| F-001 | [title] | A-001, LF-003 | Authenticated user | HIGH (4.2) | HIGH | CRITICAL |
+| F-002 | [title] | A-005 | Unauthenticated | MEDIUM (3.1) | CRITICAL | CRITICAL |
+| F-003 | [title] | LF-007, C-002 | Authenticated user | HIGH (3.8) | MEDIUM | HIGH |
 
-### Likelihood Factor Breakdown (for top threats)
-| Threat | Accessibility | Complexity | Fragility | Motivation | Discoverability | Score |
-|--------|-------------|-----------|-----------|-----------|----------------|-------|
-| T-001 | 5 | 5 | 4 | 5 | 4 | 4.2 |
+### Likelihood Factor Breakdown (for top findings)
+| Finding | Accessibility | Complexity | Fragility | Motivation | Discoverability | Score |
+|---------|-------------|-----------|-----------|-----------|----------------|-------|
+| F-001 | 5 | 5 | 4 | 5 | 4 | 4.2 |
 
 ### Attack Paths
 | # | Path | Steps | Cumulative Likelihood | Final Impact |
@@ -229,12 +231,12 @@ List all UNVALIDATED assumptions that haven't yet been connected to a specific t
 | AP-001 | [name] | 3 | [score] | [impact] |
 
 ### Trust Boundaries
-| # | Boundary | UNVALIDATED Assumptions | Logic Flaws | Risk |
-|---|----------|----------------------|-------------|------|
-| TB-001 | [name] | [count] | [count] | [level] |
+| # | Boundary | UNVALIDATED Assumptions | Findings | Risk |
+|---|----------|----------------------|----------|------|
+| TB-001 | [name] | [count] | F-NNN, F-NNN | [level] |
 
-### Top 10 Threats (sorted by likelihood, then impact)
-1. **T-NNN**: [title] — Likelihood [score], Impact [level]
+### Top 10 Findings (sorted by likelihood, then impact)
+1. **F-NNN**: [title] — Likelihood [score], Impact [level]
    Source: [assumptions/flaws]. Scenario: [1 sentence]
 2. ...
 
@@ -242,13 +244,13 @@ List all UNVALIDATED assumptions that haven't yet been connected to a specific t
 1. **AP-NNN**: [name] — [steps] steps, Final impact: [description]
 2. ...
 
-### Unresolved Assumptions (not connected to threats)
+### Unresolved Assumptions (not connected to findings)
 | # | Assumption | Type | Status | Potential Concern |
 |---|-----------|------|--------|------------------|
 | A-NNN | [description] | [type] | UNVALIDATED | [why it might matter] |
 
 ### Signals for Phase 5 (Report)
-- Total threats: [n] (CRITICAL: [n], HIGH: [n], MEDIUM: [n], LOW: [n])
+- Total findings: [n] (CRITICAL: [n], HIGH: [n], MEDIUM: [n], LOW: [n])
 - Total attack paths: [n]
 - Coverage: [what workflows were fully analyzed, what was skipped]
 ```

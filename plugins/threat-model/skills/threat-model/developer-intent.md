@@ -316,6 +316,8 @@ Minimums, not targets. Complex functions should exceed these.
 - VIOLATED: [n] ([%])
 
 ### Intent-Reality Gaps
+G-NNN IDs are working notation for this phase. Each gap maps to an F-NNN finding in the report.
+
 | # | Gap | Function | Pattern | Broken Assumptions |
 |---|-----|----------|---------|-------------------|
 | G-001 | [title] | func() at file:line | Partial validation | A-001, A-003 |

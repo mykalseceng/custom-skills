@@ -192,6 +192,62 @@ grep -rn "password\|passwd\|secret_key\|private_key\|credit_card\|card_number\|s
 grep -rn "email\|phone\|address\|date_of_birth\|session_token\|api_key\|bearer" -i --include="*.{py,js,ts,go,java,rb,rs}" | grep -vi "test\|spec\|mock\|fixture"
 ```
 
+## 7. Git History Analysis
+
+Supplementary context from version history. Not essential, but reveals assumption drift, high-churn areas, and past security concerns that the current code alone won't show.
+
+### High-Churn Files
+
+Frequently changed files are more likely to have inconsistent assumptions across edits.
+
+```bash
+# Top 20 most-changed files (excluding tests, docs, configs)
+git log --pretty=format: --name-only | grep -v "^$" | grep -vi "test\|spec\|mock\|fixture\|docs\|README\|\.lock\|\.json$" | sort | uniq -c | sort -rn | head -20
+```
+
+### Recent Changes
+
+Newly modified code may have under-validated assumptions.
+
+```bash
+# Files changed in the last 30 days
+git log --since="30 days ago" --pretty=format: --name-only | grep -v "^$" | sort -u
+
+# Summary of recent activity by area
+git log --since="30 days ago" --oneline --stat
+```
+
+### Security-Related Commit History
+
+Past fixes hint at known weak spots and recurring problem areas.
+
+```bash
+# Commits referencing security, fixes, vulnerabilities
+git log --oneline --all --grep="security\|fix\|vuln\|CVE\|XSS\|inject\|auth\|bypass\|patch\|sanitiz" -i
+
+# Files touched by security-related commits
+git log --all --grep="security\|fix\|vuln\|CVE\|bypass" -i --pretty=format: --name-only | grep -v "^$" | sort | uniq -c | sort -rn | head -15
+```
+
+### Ownership & Blame
+
+Fragmented ownership on security-critical code increases assumption drift.
+
+```bash
+# Who last touched auth/security files (adapt paths to target codebase)
+git blame --line-porcelain <auth-file> | grep "^author " | sort | uniq -c | sort -rn
+```
+
+### Git History Inventory Template
+
+```
+Churn Hotspots: [top 5 files by change frequency]
+Recent Activity: [areas with most change in last 30 days]
+Security Commits: [count, key themes]
+Ownership Fragmentation: [files with 3+ distinct authors on security-critical code]
+Signals: [what this suggests for Phase 2 prioritization]
+```
+
 ## Phase 1 Output Template
 
 ```markdown
@@ -232,6 +288,12 @@ grep -rn "email\|phone\|address\|date_of_birth\|session_token\|api_key\|bearer" 
 |---------------|-----------------|-----------|
 | CRITICAL | passwords, payment data | [files] |
 | HIGH | PII, API keys | [files] |
+
+### Git History Signals
+- Churn hotspots: [top files]
+- Security-related commits: [count, themes]
+- Recent activity: [areas with most change]
+- Ownership fragmentation: [files with multiple authors on critical code]
 
 ### Signals for Phase 2 (Developer Intent)
 1. [signal] — [which functions/workflows to prioritize]

@@ -286,6 +286,8 @@ After individual flaw hunting, look for combinations where two or more flaw cate
 ## Logic Flaw Summary
 
 ### Flaw Inventory
+LF-NNN IDs are working notation for this phase. Each flaw maps to an F-NNN finding in the report.
+
 | # | Category | Flaw | Location | Exploitability | Related Assumptions |
 |---|---------|------|----------|---------------|-------------------|
 | LF-001 | #1 Authorization Gap | [description] | file:line | HIGH | A-001, A-005 |
