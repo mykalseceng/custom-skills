@@ -1,11 +1,12 @@
 ---
 name: threat-model
 description: >
-  Intent-driven threat modeling — developer intent analysis, assumption mapping,
-  logic flaw taxonomy, and likelihood-ranked threats. Analyzes what developers
-  intended, what they assumed, where logic diverges from intent, and how attackers
-  exploit the gaps. Use for threat modeling any codebase where you need to understand
-  what can go wrong and why, rather than hunting for specific vulnerability classes.
+  Intent-driven threat modeling — design intent analysis, assumption mapping,
+  logic flaw taxonomy, and likelihood-ranked threats. Analyzes the intended behavior,
+  underlying assumptions, where logic diverges from intent, and how attackers
+  exploit those gaps. Not locked into STRIDE or any fixed framework — threats emerge
+  organically from code analysis. Use for threat modeling any codebase where you need
+  to understand what can go wrong and why, rather than hunting for specific vulnerability classes.
 allowed-tools:
   - Read
   - Write
