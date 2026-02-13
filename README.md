@@ -31,7 +31,8 @@ cd /path/to/parent
 
 | Plugin | Description |
 |--------|-------------|
-| [codebase-security-review](plugins/codebase-security-review/) | Full-codebase security review with deep code comprehension, threat modeling, OWASP vulnerability hunting, and exploit scenario building. Inspired by [Trail of Bits](https://github.com/trailofbits/skills) audit-context-building and differential-review skills. |
+| [codebase-security-review](plugins/codebase-security-review/) | Full-pipeline security review — deep code comprehension, reconnaissance, STRIDE threat modeling, OWASP Top 10 vulnerability hunting, and exploit scenario building — for entire codebases or code changes. Supports Python, JavaScript/TypeScript, Go, Java, Rust, Ruby, PHP, and C/C++. |
+| [threat-model](plugins/threat-model/) | Intent-driven threat modeling — developer intent analysis, assumption mapping, logic flaw taxonomy, and likelihood-ranked threats. Discovers threats from broken assumptions and logic flaws rather than fixed frameworks. |
 
 ## Contributing
 
@@ -43,4 +44,4 @@ This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 Inter
 
 ## Acknowledgments
 
-Structure and methodology inspired by [Trail of Bits Skills Marketplace](https://github.com/trailofbits/skills).
+Structure and conventions modeled after [Trail of Bits Skills](https://github.com/trailofbits/skills).

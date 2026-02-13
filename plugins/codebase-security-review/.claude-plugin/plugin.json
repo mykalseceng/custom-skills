@@ -1,7 +1,7 @@
 {
   "name": "codebase-security-review",
   "version": "1.0.0",
-  "description": "Full-codebase security review with deep code comprehension, threat modeling, OWASP vulnerability hunting, and exploit scenario building",
+  "description": "Full-pipeline security review — deep code comprehension, reconnaissance, STRIDE threat modeling, OWASP Top 10 vulnerability hunting, and exploit scenario building — for entire codebases or code changes. Supports Python, JavaScript/TypeScript, Go, Java, Rust, Ruby, PHP, and C/C++.",
   "author": {
     "name": "dark_knight"
   }

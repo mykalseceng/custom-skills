@@ -5,17 +5,26 @@
   },
   "metadata": {
     "version": "1.0.0",
-    "description": "Claude Code plugins for AI-assisted security analysis. Inspired by Trail of Bits Skills."
+    "description": "Claude Code plugins for AI-assisted security analysis workflows."
   },
   "plugins": [
     {
       "name": "codebase-security-review",
       "version": "1.0.0",
-      "description": "Full-codebase security review with deep code comprehension, threat modeling, OWASP vulnerability hunting, and exploit scenario building. Inspired by Trail of Bits audit-context-building and differential-review skills.",
+      "description": "Full-pipeline security review — deep code comprehension, reconnaissance, STRIDE threat modeling, OWASP Top 10 vulnerability hunting, and exploit scenario building — for entire codebases or code changes. Supports Python, JavaScript/TypeScript, Go, Java, Rust, Ruby, PHP, and C/C++.",
       "author": {
         "name": "dark_knight"
       },
       "source": "./plugins/codebase-security-review"
+    },
+    {
+      "name": "threat-model",
+      "version": "1.0.0",
+      "description": "Intent-driven threat modeling — developer intent analysis, assumption mapping, logic flaw taxonomy, and likelihood-ranked threats. Discovers threats from broken assumptions and logic flaws rather than fixed frameworks.",
+      "author": {
+        "name": "dark_knight"
+      },
+      "source": "./plugins/threat-model"
     }
   ]
 }

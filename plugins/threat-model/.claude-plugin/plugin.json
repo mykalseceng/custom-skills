@@ -1,0 +1,8 @@
+{
+  "name": "threat-model",
+  "version": "1.0.0",
+  "description": "Intent-driven threat modeling — developer intent analysis, assumption mapping, logic flaw taxonomy, and likelihood-ranked threats. Analyzes what developers intended, what they assumed, where logic diverges from intent, and how attackers exploit the gaps. Distinct from vulnerability hunting (OWASP/STRIDE); focuses on reasoning about code logic, not pattern-matching known vuln classes.",
+  "author": {
+    "name": "dark_knight"
+  }
+}
