@@ -255,6 +255,20 @@ For each assumption — explain what it is, where it lives, why it's unvalidated
 
 *Sorted by likelihood (highest first), then by impact within the same tier.*
 
+### Confidence Scoring Framework
+
+Every threat gets a confidence score. This is NOT about how severe the threat is — it's about how sure you are that the threat is real and accurately described. A CRITICAL threat can have LOW confidence (you think the attack is possible but haven't fully verified the path).
+
+| Level | Meaning | Evidence Basis |
+|-------|---------|---------------|
+| **HIGH** | Verified through code — the flaw exists, the path is reachable, the impact is confirmed | Read the relevant code line-by-line. Traced the full call chain. Confirmed no mitigating controls exist. Verified attacker can reach the entry point. |
+| **MEDIUM** | Strong indicators but incomplete verification — some part of the chain is inferred, not confirmed | Read the code but didn't trace every caller. Inferred reachability from architecture rather than verifying the exact call path. Or: confirmed the flaw but unsure about the full impact. |
+| **LOW** | Plausible based on patterns but not verified in code — assessment based on structural signals, naming, or architecture rather than line-by-line reading | Identified the pattern (e.g., "no auth middleware visible") but didn't read the full function. Or: the flaw exists but the exploitability depends on runtime conditions not observable in static analysis. |
+
+**Rule**: Never inflate confidence. If you didn't read the code, say LOW. If you read the code but not the full chain, say MEDIUM. HIGH means you traced it end-to-end.
+
+---
+
 ### CRITICAL Risk
 
 #### T-001: <Threat Title>
@@ -283,28 +297,32 @@ For each assumption — explain what it is, where it lives, why it's unvalidated
 | Discoverability | <1/3/5> | <why> |
 
 **Impact**: <CRITICAL/HIGH/MEDIUM/LOW> — <concrete impact description>
+
 **Confidence**: <HIGH/MEDIUM/LOW>
+- **What I verified**: <what code was actually read, what call chains were traced>
+- **What I inferred**: <what was assumed based on structure/naming/architecture without line-by-line verification>
+- **What could change this assessment**: <what additional analysis might raise or lower the confidence — e.g., "if the auth middleware is registered in a file I didn't read, this threat is invalid" or "runtime behavior of the ORM could add validation not visible in the application code">
 
 ---
 
 ### HIGH Risk
 
 #### T-002: <Threat Title>
-<same structure as CRITICAL>
+<same structure as CRITICAL — including full confidence breakdown>
 
 ---
 
 ### MEDIUM Risk
 
 #### T-003: <Threat Title>
-<same structure — likelihood factor table can be condensed to a single line if space is a concern>
+<same structure — likelihood factor table can be condensed to a single line if space is a concern, but confidence breakdown is always required>
 
 ---
 
 ### LOW Risk
 
 #### T-004: <Threat Title>
-<abbreviated — source, actor, scenario (1-2 sentences), likelihood score, impact. No full factor table needed.>
+<abbreviated — source, actor, scenario (1-2 sentences), likelihood score, impact. Confidence still required but can be a single line: "LOW — inferred from [basis], not verified in code.">
 
 ---
 
@@ -374,10 +392,20 @@ Multi-step chains where exploiting one threat enables the next. Each step refere
 - <areas skipped and why>
 - <functions not analyzed at chosen depth>
 
-### Confidence Assessment
-- **HIGH confidence**: <areas with thorough analysis>
-- **MEDIUM confidence**: <areas with partial analysis>
-- **LOW confidence**: <areas with minimal or no analysis>
+### Confidence Summary
+
+Aggregate view of how confident the analysis is across all threats. This table lets the reader quickly see which findings are well-grounded and which need further verification.
+
+| Threat | Risk | Confidence | Basis | What Would Change It |
+|--------|------|-----------|-------|---------------------|
+| T-001 | CRITICAL | <HIGH/MED/LOW> | <1-sentence: what evidence supports this — e.g., "read full call chain from route handler to DB query, no auth check found"> | <what could invalidate this — e.g., "auth middleware in an unreviewed config file"> |
+| T-002 | HIGH | <level> | <basis> | <what could change it> |
+| ... | | | | |
+
+**Overall confidence by area**:
+- **HIGH confidence**: <areas where code was read line-by-line, full chains traced>
+- **MEDIUM confidence**: <areas where key functions were read but not all callers/paths>
+- **LOW confidence**: <areas assessed from architecture/structure only, not code-level>
 
 ---
 
@@ -431,7 +459,8 @@ Full record of the Phase 3 adversarial persona walkthroughs. Preserves what each
 7. **No severity inflation.** A missing edge case on a low-value field is LOW, not HIGH.
 8. **No severity deflation.** An UNVALIDATED authorization assumption on a sensitive endpoint is HIGH even if exploitation is complex.
 9. **Actionable recommendations.** "Add authorization check at `service.py:42` verifying `user.id == resource.owner_id`" — not "add better access control."
-10. **Coverage honesty.** State exactly what was and wasn't analyzed.
+10. **Justify every confidence score.** HIGH/MEDIUM/LOW is meaningless without "because I read X / inferred Y / didn't verify Z." The reader needs to know what to trust and what to re-check.
+11. **Coverage honesty.** State exactly what was and wasn't analyzed.
 
 ## File Writing
 
