@@ -2,21 +2,27 @@
 
 Template and guidelines for producing the final threat model document. The report synthesizes all phases into a single, ranked document that communicates threats clearly and actionably.
 
+**This phase MUST produce a written markdown file.** The report is the deliverable — analysis without a written report is incomplete.
+
 ---
 
 ## Report File
 
 File name: `<PROJECT>_THREAT_MODEL_<YYYY-MM-DD>.md`
 
+Write the report to the **target project's root directory** (the directory that was passed as the argument to the skill). If reviewing external code (not in a project), use the current working directory.
+
 Determine project name from the target directory:
 
 ```bash
-PROJECT_NAME=$(basename "$(pwd)" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+PROJECT_NAME=$(basename "<target-path>" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
 DATE=$(date +%Y-%m-%d)
 FILENAME="${PROJECT_NAME}_THREAT_MODEL_${DATE}.md"
 ```
 
 If the file already exists, append `_v2`, `_v3`, etc.
+
+**Use the Write tool to create the file.** Do not just output the report to the conversation — it must be persisted as a file.
 
 ---
 
@@ -301,8 +307,21 @@ FILENAME="${PROJECT_NAME}_THREAT_MODEL_${DATE}.md"
 
 If the file already exists (re-analysis), append `_v2`, `_v3`, etc.
 
-After writing, inform the user:
-- Report file path
-- Summary: threat counts by risk level
-- Top 3 most likely threats
-- Top recommendation
+**After writing the file**, output a completion summary to the user:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Threat Model Complete
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Report: <file path>
+
+Threats: X CRITICAL, Y HIGH, Z MEDIUM, W LOW
+
+Top 3 (by likelihood):
+1. <threat> — <likelihood score>
+2. <threat> — <likelihood score>
+3. <threat> — <likelihood score>
+
+Top recommendation: <most important fix>
+```

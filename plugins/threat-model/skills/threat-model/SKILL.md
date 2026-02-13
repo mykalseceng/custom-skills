@@ -76,26 +76,40 @@ All methodology docs are **sibling files in the same directory as this SKILL.md*
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Phase Decision Tree
+## Phase Execution Protocol
 
-Follow in order. Do not skip phases.
+**Follow in order. Do not skip phases. Read the companion file for each phase before executing it.**
 
-1. **Reconnaissance** → read [reconnaissance.md](reconnaissance.md)
+At the start of each phase, output a visual phase header to the user:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Phase N/5: PHASE NAME
+  → Brief description of what this phase does
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+At the end of each phase, output a brief completion summary before proceeding.
+
+### Phase Decision Tree
+
+1. **Phase 1: Reconnaissance** → read [reconnaissance.md](reconnaissance.md)
    - Understand what the system does: languages, entry points, workflows, state machines
    - Output: structural map + workflow inventory + state machine inventory
-2. **Developer Intent Analysis** → read [developer-intent.md](developer-intent.md)
+2. **Phase 2: Developer Intent Analysis** → read [developer-intent.md](developer-intent.md)
    - Per-function: reconstruct intent, map assumptions, find intent-reality gaps
    - Output: assumption inventory (VALIDATED/UNVALIDATED/VIOLATED) + gap analysis
    - **Must pass completeness gate before proceeding**
-3. **Logic Flaw Hunting** → read [logic-flaw-taxonomy.md](logic-flaw-taxonomy.md)
+3. **Phase 3: Logic Flaw Hunting** → read [logic-flaw-taxonomy.md](logic-flaw-taxonomy.md)
    - Walk 12 flaw categories against the codebase; walk workflows as adversarial personas
    - Output: logic flaw inventory with file:line references
-4. **Threat Analysis & Ranking** → read [threat-analysis.md](threat-analysis.md)
+4. **Phase 4: Threat Analysis & Ranking** → read [threat-analysis.md](threat-analysis.md)
    - Derive threats from broken assumptions + logic flaws; rank by likelihood
    - Output: ranked threat list + attack paths + focus areas
-5. **Report** → read [reporting.md](reporting.md)
-   - Write the threat model document
-   - Output: `<PROJECT>_THREAT_MODEL_<YYYY-MM-DD>.md`
+5. **Phase 5: Report** → read [reporting.md](reporting.md)
+   - Write the threat model document to a markdown file
+   - Output: `<PROJECT>_THREAT_MODEL_<YYYY-MM-DD>.md` written to the project's root directory
+   - After writing, inform the user: file path, threat counts by risk level, top 3 threats, top recommendation
 
 ## Review Depth
 
